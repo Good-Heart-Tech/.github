@@ -1,5 +1,7 @@
 # Good Heart Tech
 
+[![Donate](https://img.shields.io/badge/Donate-support%20our%20mission-brightgreen)](https://goodhearttech.org/donate)
+
 Good Heart Tech is a volunteer-run nonprofit providing free IT and cybersecurity services to other nonprofits in the Boise area.
 
 - Website: https://goodhearttech.org
