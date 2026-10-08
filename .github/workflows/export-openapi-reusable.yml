@@ -1,0 +1,50 @@
+# Reusable workflow: export FastAPI OpenAPI to openapi/openapi.json
+# Caller must set working-directory to a repo with scripts/export_openapi.py
+name: Export OpenAPI (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: Python version for export
+        required: false
+        type: string
+        default: "3.12"
+      requirements-file:
+        description: Path to requirements.txt
+        required: false
+        type: string
+        default: "requirements.txt"
+      export-script:
+        description: Path to export script
+        required: false
+        type: string
+        default: "scripts/export_openapi.py"
+    outputs:
+      openapi-path:
+        description: Path to exported file
+        value: openapi/openapi.json
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Install dependencies
+        run: pip install -r "${{ inputs.requirements-file }}"
+
+      - name: Export OpenAPI
+        run: python "${{ inputs.export-script }}"
+
+      - name: Upload OpenAPI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-json
+          path: openapi/openapi.json
+          if-no-files-found: error

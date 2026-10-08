@@ -7,3 +7,7 @@ Good Heart Tech is a volunteer-run nonprofit providing free IT and cybersecurity
 - Website: https://goodhearttech.org
 
 We work like an MSP: our volunteer engineers are IT and security professionals who donate their time to keep local nonprofits safe and running.
+
+## Engineering automation
+
+Reusable GitHub Actions for GHT repos live in this `.github` repository — see [export-openapi-reusable.yml](../.github/workflows/export-openapi-reusable.yml) (FastAPI OpenAPI export).
