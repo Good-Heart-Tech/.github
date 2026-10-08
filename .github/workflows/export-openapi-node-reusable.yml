@@ -1,0 +1,44 @@
+# Reusable workflow: validate Node/Express committed OpenAPI (openapi/openapi.json)
+name: Export OpenAPI Node (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: Node.js version
+        required: false
+        type: string
+        default: "22"
+      export-script:
+        description: Path to export/validate script
+        required: false
+        type: string
+        default: "scripts/export_openapi.js"
+    outputs:
+      openapi-path:
+        description: Path to spec file
+        value: openapi/openapi.json
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then npm ci; elif [ -f package.json ]; then npm install; fi
+
+      - name: Validate OpenAPI artifact
+        run: node "${{ inputs.export-script }}"
+
+      - name: Upload OpenAPI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-json
+          path: openapi/openapi.json
+          if-no-files-found: error
